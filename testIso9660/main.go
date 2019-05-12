@@ -14,7 +14,7 @@ import (
 	"github.com/dex/iso9660"
 )
 
-var port = flag.Int("port", 8080, "Port to linsten on")
+var port = flag.Int("p", 8080, "`Port` to linsten on")
 
 type isoFs struct {
 	fs *iso9660.FileSystem
@@ -26,13 +26,12 @@ func (iso *isoFs) Open(name string) (http.File, error) {
 
 func main() {
 	flag.Parse()
-	argc := len(os.Args)
 
-	if argc < 2 {
+	if flag.NArg() < 1 {
 		os.Exit(1)
 	}
 
-	fs, err := iso9660.Open(os.Args[1])
+	fs, err := iso9660.Open(flag.Arg(0))
 	if err != nil {
 		log.Fatal(err)
 	}
