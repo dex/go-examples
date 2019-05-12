@@ -40,7 +40,6 @@ func main() {
 	http.Handle("/repo/", http.StripPrefix("/repo/", http.FileServer(&isoFs{fs})))
 	http.HandleFunc("/v1/boot/", api)
 	log.Fatal(http.ListenAndServe(":"+strconv.Itoa(*port), nil))
-
 }
 
 func api(w http.ResponseWriter, r *http.Request) {
