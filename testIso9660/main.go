@@ -10,11 +10,13 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 
 	"github.com/dex/iso9660"
 )
 
 var port = flag.Int("p", 8080, "`Port` to linsten on")
+var mac = flag.String("m", "", "client `mac` address")
 
 type isoFs struct {
 	fs *iso9660.FileSystem
@@ -42,6 +44,11 @@ func main() {
 }
 
 func api(w http.ResponseWriter, r *http.Request) {
+	if len(*mac) > 0 && strings.Compare(strings.ToLower(*mac), filepath.Base(r.URL.Path)) != 0 {
+		log.Printf("Ignore request from %s", filepath.Base(r.URL.Path))
+		http.NotFound(w, r)
+		return
+	}
 	log.Printf("Serving boot config for %s", filepath.Base(r.URL.Path))
 	resp := struct {
 		K string   `json:"kernel"`
