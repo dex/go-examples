@@ -59,7 +59,7 @@ func api(w http.ResponseWriter, r *http.Request) {
 		I: []string{
 			"/repo/isolinux/initrd.img",
 		},
-		C: fmt.Sprintf("ip=dhcp inst.repo=http://%s/repo inst.ks=http://10.206.83.38:8000/install.ks", r.Host),
+		C: fmt.Sprintf("ip=dhcp inst.repo=http://%s/repo inst.ks=http://%s/repo/install/install.ks console=ttyS0,115200", r.Host, r.Host),
 	}
 
 	if err := json.NewEncoder(w).Encode(&resp); err != nil {
